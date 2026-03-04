@@ -1,0 +1,31 @@
+name: Build NexusTrade
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: pip install PyQt6 pyqtgraph yfinance pandas numpy scikit-learn pyqtdarktheme pyinstaller
+
+      - name: Build
+        working-directory: NexusTrade_Platform/TradingPlatform/src
+        shell: cmd
+        run: pyinstaller --onefile --windowed --name "NexusTrade" --add-data "ui;ui" --add-data "data;data" --add-data "ai;ai" --hidden-import PyQt6 --hidden-import PyQt6.QtCore --hidden-import PyQt6.QtGui --hidden-import PyQt6.QtWidgets --hidden-import pyqtgraph --hidden-import yfinance --hidden-import pandas --hidden-import numpy --hidden-import sklearn --hidden-import sklearn.ensemble --hidden-import sklearn.preprocessing --hidden-import qdarktheme --collect-all pyqtgraph --collect-all qdarktheme --paths "." --noconfirm main.py
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: NexusTrade-Windows-EXE
+          path: NexusTrade_Platform/TradingPlatform/src/dist/NexusTrade.exe
+          retention-days: 30
