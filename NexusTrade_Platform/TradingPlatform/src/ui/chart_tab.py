@@ -1,5 +1,5 @@
 """
-Chart Tab - Main trading view with candlestick charts, indicators, AI panel
+Chart Tab - Main trading view
 """
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
